@@ -123,7 +123,6 @@ export default {
     }
 }
 .list-of-posts {
-    height: 100%;
     width: 80vw;
     display: grid;
     grid-template-columns: auto auto auto auto;

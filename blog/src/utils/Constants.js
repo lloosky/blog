@@ -1,0 +1,3 @@
+export default {
+  CHECK_TOKEN_STATUS: "CHECK_TOKEN_STATUS"
+}

@@ -1,28 +1,15 @@
 <template>
 <div class="landing-page">
-  <div class="navigationItems">
-    <!-- <div class="sidenav-toggle">
-      <div></div>
-      <div></div>
-      <div></div>
-    </div> -->
-    <div class="logo">
-      <span>#personal<strong>BLOG</strong></span>
-    </div>
-    <MainNavigation />
-  </div>
   <Slider />
   <ListOfPosts />
 </div>
 </template>
 
 <script>
-import MainNavigation from './../components/Elements/MainNavigation'
 import Slider from './../components/Elements/Slider'
 import ListOfPosts from './../components/listOfPosts'
 export default {
   components: {
-    MainNavigation,
     Slider,
     ListOfPosts
   },
@@ -52,16 +39,6 @@ export default {
             border-bottom-right-radius: 25px;
             border-top-left-radius: 25px;
             background-color: #6643914d;
-        }
-        .sidenav-toggle {
-            margin-left: 3rem;
-            div {
-                width: 30px;
-                height: 2px;
-                background-color: #fff;
-                border-radius: 25px;
-                margin-bottom: 5px;
-            }
         }
     }
 }
