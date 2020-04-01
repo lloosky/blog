@@ -37,6 +37,7 @@ export default {
   methods: {
     async getPostInfo(id) {
       try {
+        console.log(id);
         await this.$http.delete(`http://localhost:5000/api/posts/${id}`)
       } catch (e) {
         console.log(e);
