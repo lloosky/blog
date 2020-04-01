@@ -6,69 +6,19 @@
       <div class="search-button">&#10132;</div>
     </div>
     <div class="display-form">
-      <span @click="gridColumns = 'auto'">&#9776;</span>
-      <span @click="gridColumns = 'auto auto auto auto'">&#9783;</span>
+      <span @click="gridColumns = '100%'">&#9776;</span>
+      <span @click="gridColumns = '25% 25% 25% 25%'">&#9783;</span>
     </div>
   </div>
   <div class="list-of-posts" :style='{gridTemplateColumns: gridColumns}'>
-    <div class="single-post">
+    <div class="single-post" v-for="post in posts" :key="post.postID" @click="getPostInfo(post.postID)">
       <div class="post-photo-container">
-        <div class="post-photo">
+        <div class="post-photo" :style="{backgroundImage: `url(http://localhost:5000/${post.postIMG})`}">
         </div>
       </div>
-      <h1>POST TITLE #1</h1>
-      <span>september 8, 2020</span>
-      <p> Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Suspendisse faucibus interdum posuere lorem ipsum dolor.</p>
-      <button type="button" name="button">read article</button>
-    </div>
-    <div class="single-post">
-      <div class="post-photo-container">
-        <div class="post-photo">
-        </div>
-      </div>
-      <h1>POST TITLE #1</h1>
-      <span>september 8, 2020</span>
-      <p> Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Suspendisse faucibus interdum posuere lorem ipsum dolor.</p>
-      <button type="button" name="button">read article</button>
-    </div>
-    <div class="single-post">
-      <div class="post-photo-container">
-        <div class="post-photo">
-        </div>
-      </div>
-      <h1>POST TITLE #1</h1>
-      <span>september 8, 2020</span>
-      <p> Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Suspendisse faucibus interdum posuere lorem ipsum dolor.</p>
-      <button type="button" name="button">read article</button>
-    </div>
-    <div class="single-post">
-      <div class="post-photo-container">
-        <div class="post-photo">
-        </div>
-      </div>
-      <h1>POST TITLE #1</h1>
-      <span>september 8, 2020</span>
-      <p> Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Suspendisse faucibus interdum posuere lorem ipsum dolor.</p>
-      <button type="button" name="button">read article</button>
-    </div>
-    <div class="single-post">
-      <div class="post-photo-container">
-        <div class="post-photo">
-        </div>
-      </div>
-      <h1>POST TITLE #1</h1>
-      <span>september 8, 2020</span>
-      <p> Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Suspendisse faucibus interdum posuere lorem ipsum dolor.</p>
-      <button type="button" name="button">read article</button>
-    </div>
-    <div class="single-post">
-      <div class="post-photo-container">
-        <div class="post-photo">
-        </div>
-      </div>
-      <h1>POST TITLE #1</h1>
-      <span>september 8, 2020</span>
-      <p> Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Suspendisse faucibus interdum posuere lorem ipsum dolor.</p>
+      <h3>{{post.post.title}}</h3>
+      <span>{{post.post.date}}</span>
+      <p>{{post.post.body}}</p>
       <button type="button" name="button">read article</button>
     </div>
   </div>
@@ -80,8 +30,32 @@ export default {
   name: 'ListOfPosts',
   data() {
     return {
-      gridColumns: "auto auto auto auto"
+      gridColumns: "25% 25% 25% 25%",
+      posts: []
     }
+  },
+  methods: {
+    async getPostInfo(id) {
+      try {
+        await this.$http.delete(`http://localhost:5000/api/posts/${id}`)
+      } catch (e) {
+        console.log(e);
+      }
+    },
+    async getListOfPosts() {
+      try {
+        const {
+          data
+        } = await this.$http.get('http://localhost:5000/api/posts')
+        console.log(data);
+        this.posts = data
+      } catch (e) {
+        console.log(e);
+      }
+    }
+  },
+  created() {
+    this.getListOfPosts()
   }
 }
 </script>
@@ -125,7 +99,7 @@ export default {
 .list-of-posts {
     width: 80vw;
     display: grid;
-    grid-template-columns: auto auto auto auto;
+    grid-template-columns: 25% 25% 25% 25%;
     justify-content: center;
     align-content: center;
     grid-gap: 1rem;
@@ -136,7 +110,8 @@ export default {
         position: relative;
         z-index: 1;
         color: #fff;
-        h1,
+        display: grid;
+        h3,
         p,
         span {
             padding: 0.5rem;
@@ -161,7 +136,9 @@ export default {
             justify-self: center;
             font-size: 14px;
             color: white;
-            float: right;
+            justify-self: end;
+            height: 40px;
+            align-self: end;
         }
     }
 }
