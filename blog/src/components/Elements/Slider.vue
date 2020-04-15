@@ -1,28 +1,14 @@
 <template>
 <div class="slider">
   <carousel :perPage="1" :navigationEnabled="true" :autoplay="true" :loop="true" :autoplayTimeout="3000" :paginationEnabled="false">
-    <slide>
+    <slide v-for="(post) in limitedPosts" :key="post.postID">
       <div class="post-info">
-        <h1>POST TITLE #1</h1>
-        <span>september 8, 2020</span>
-        <p> Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Suspendisse faucibus interdum posuere lorem ipsum dolor.</p>
+        <h1>{{post.post.title}}</h1>
+        <span>{{post.post.date}}</span>
+        <p>{{post.post.body}}</p>
         <button type="button" name="button">read article</button>
       </div>
-      <div class="post-photo">
-        <div class="photo-shadow">
-        </div>
-      </div>
-    </slide>
-    <slide>
-      <div class="post-info">
-        <h1>POST TITLE #1</h1>
-        <span>september 8, 2020</span>
-        <p> Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Suspendisse faucibus interdum posuere lorem ipsum dolor.</p>
-        <button type="button" name="button">read article</button>
-      </div>
-      <div class="post-photo">
-        <div class="photo-shadow">
-        </div>
+      <div class="post-photo" :style="{backgroundImage: `url(http://localhost:5000/${post.postIMG})`}">
       </div>
     </slide>
   </carousel>
@@ -30,6 +16,7 @@
 </template>
 
 <script>
+import Constants from './../../utils/Constants'
 import {
   Carousel,
   Slide
@@ -43,7 +30,18 @@ export default {
   data() {
     return {}
   },
-  methods: {}
+  methods: {},
+  computed: {
+    posts() {
+      return this.$store.state.posts
+    },
+    limitedPosts() {
+      return this.posts.slice(0, 3)
+    }
+  },
+  created() {
+    this.$store.commit(Constants.GET_LIST_OF_POSTS)
+  }
 }
 </script>
 <style lang="scss">

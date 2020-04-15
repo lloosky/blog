@@ -29,7 +29,7 @@ router.post('/', upload.single('file'), async (req, res) => {
     let user = await User.findOne({
       _id: req.body.userID
     })
-    user.posts.push({
+    user.posts.unshift({
       userID: req.body.userID,
       postID: req.body.postID,
       postIMG: req.file.originalname,

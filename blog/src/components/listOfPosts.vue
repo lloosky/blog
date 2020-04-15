@@ -1,5 +1,8 @@
 <template>
 <div class="posts-list-container">
+  <transition name="slide" mode="out-in">
+    <EditPost v-if="showEditPost" />
+  </transition>
   <div class="posts-navigation-bar">
     <div class="search">
       <input type="text" name="" value="" placeholder="find post">
@@ -11,8 +14,19 @@
     </div>
   </div>
   <div class="list-of-posts" :style='{gridTemplateColumns: gridColumns}'>
-    <div class="single-post" v-for="post in posts" :key="post.postID" @click="getPostInfo(post.postID)">
+    <div class="single-post" v-for="(post, index) in posts" :key="post.postID">
       <div class="post-photo-container">
+        <div class="single-post-controls" v-if="isTokenAvaible">
+          <div class="edit-post" @click="editSinglePost(post.postID)">
+            <img src="https://img.icons8.com/ios/50/000000/edit.png" />
+          </div>
+          <div class="remove-post" @click="removeSinglePost(post.postID, index)">
+            <img src="https://img.icons8.com/ios/50/000000/delete.png" />
+          </div>
+          <div class="see-post" @click="seeSinglePost(post.postID)">
+            <img src="https://img.icons8.com/ios/50/000000/invisible.png" />
+          </div>
+        </div>
         <div class="post-photo" :style="{backgroundImage: `url(http://localhost:5000/${post.postIMG})`}">
         </div>
       </div>
@@ -26,37 +40,53 @@
 </template>
 
 <script>
+import EditPost from './../components/EditPost'
+import Constants from './../utils/Constants'
 export default {
   name: 'ListOfPosts',
+  components: {
+    EditPost
+  },
   data() {
     return {
       gridColumns: "25% 25% 25% 25%",
-      posts: []
+      isTokenAvaible: this.$store.state.isTokenAvaible
     }
   },
   methods: {
-    async getPostInfo(id) {
-      try {
-        console.log(id);
-        await this.$http.delete(`http://localhost:5000/api/posts/${id}`)
-      } catch (e) {
-        console.log(e);
-      }
+    editSinglePost(id) {
+      this.showEditPost = true
+      window.scrollTo(0, 0)
+      const singlePost = this.posts.filter(item => item.postID === id)
+      this.$store.commit(Constants.SET_POST, singlePost)
     },
-    async getListOfPosts() {
+    seeSinglePost() {},
+    async removeSinglePost(id, index) {
       try {
-        const {
-          data
-        } = await this.$http.get('http://localhost:5000/api/posts')
-        console.log(data);
-        this.posts = data
+        if (confirm('Are you sure ?')) {
+          this.posts.splice(index, 1)
+          await this.$http.delete(Constants.SERVER_URL + `/posts/${id}`)
+        }
       } catch (e) {
         console.log(e);
       }
     }
   },
+  computed: {
+    showEditPost: {
+      get() {
+        return this.$store.state.showEditPost
+      },
+      set(value) {
+        this.$store.state.showEditPost = value
+      }
+    },
+    posts() {
+      return this.$store.state.posts
+    }
+  },
   created() {
-    this.getListOfPosts()
+    this.$store.commit(Constants.GET_LIST_OF_POSTS)
   }
 }
 </script>
@@ -117,6 +147,24 @@ export default {
         span {
             padding: 0.5rem;
         }
+        .single-post-controls {
+            height: 30px;
+            width: 50%;
+            display: flex;
+            flex-direction: row;
+            justify-content: space-around;
+            align-items: center;
+            background-color: #ffcb5a;
+            transition: 0.3s all;
+            border-bottom: 1px solid #fff;
+            img {
+                height: 25px;
+                &:hover {
+                    cursor: pointer;
+                    transform: scale(.8);
+                }
+            }
+        }
         .post-photo-container {
             border-top: 2px solid #664391;
             .post-photo {
@@ -127,6 +175,7 @@ export default {
                 background-image: url("https://images.pexels.com/photos/1028223/pexels-photo-1028223.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940");
                 background-size: cover;
                 opacity: 0.2;
+                bottom: 0;
             }
         }
         button {

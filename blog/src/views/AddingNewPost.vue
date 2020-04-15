@@ -2,9 +2,9 @@
 <div class="adding-post-form-container">
   <form @submit.prevent="addPost" enctype="multipart/form-data">
     <h2>Add new post - {{post.title}}</h2>
-    <input type="text" name="" value="" v-model="post.title" placeholder="title">
+    <input type="text" v-model="post.title" placeholder="title">
     <textarea rows="20" cols="50" v-model="post.body" placeholder="body"></textarea>
-    <input type="text" name="" value="" v-model="post.tags" placeholder="tags">
+    <input type="text" v-model="post.tags" placeholder="tags">
     <div class="custom-file">
       <input type="file" class="custom-file-input" id="validatedCustomFile" ref="file" @change="onSelect" required>
       <label class="custom-file-label" for="validatedCustomFile">Choose file...</label>

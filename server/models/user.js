@@ -30,8 +30,7 @@ function validateUser(user) {
     name: Joi.string().required(),
     email: Joi.string().required().email(),
     password: Joi.string().required(),
-    img: Joi.string().required(),
-    posts: Joi.file().required()
+    img: Joi.string().required()
   }
   return Joi.validate(user, schema)
 }

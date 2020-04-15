@@ -35,4 +35,21 @@ router.delete('/:id', async (req, res) => {
   if (!post) return res.status(404).send('The post id was not found')
   res.send(post)
 })
+// update post
+router.put('/:id', async (req, res) => {
+  try {
+    const singlePost = await User.updateOne({
+      "posts.postID": req.params.id
+    }, {
+      "posts.$.post.title": req.body.title,
+      "posts.$.post.body": req.body.content
+    }, {
+      new: true
+    })
+    if (!singlePost) return res.status(404).send('The post id was not found')
+    res.send(singlePost)
+  } catch (e) {
+    console.log(e)
+  }
+})
 module.exports = router

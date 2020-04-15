@@ -12,7 +12,8 @@ const newpost = require('./routes/newpost')
 mongoose.connect('mongodb://localhost/rest', {
   useNewUrlParser: true,
   useUnifiedTopology: true,
-  useCreateIndex: true
+  useCreateIndex: true,
+  useFindAndModify: false
 }).then(() => console.log('Connected to MongoDB')).catch(err => console.log('Database error', err))
 app.use(express.json())
 app.use(cors())

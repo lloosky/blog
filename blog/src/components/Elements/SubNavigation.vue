@@ -30,6 +30,9 @@ export default {
     return {}
   },
   methods: {
+    setEmptyForm() {
+      this.postToEdit = ''
+    },
     logout() {
       localStorage.removeItem('token')
       this.$router.push({
@@ -42,6 +45,14 @@ export default {
   computed: {
     isTokenAvaible() {
       return this.$store.state.isTokenAvaible
+    },
+    postToEdit: {
+      get() {
+        return this.$store.state.postToEdit
+      },
+      set(value) {
+        this.$store.state.postToEdit = value
+      }
     }
   }
 }
