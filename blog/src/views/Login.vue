@@ -28,7 +28,6 @@ export default {
         })
         localStorage.setItem('token', data.token)
         localStorage.setItem('userID', data.user._id)
-        console.log(data);
         this.$store.commit(Constants.CHECK_TOKEN_STATUS)
         if (data) {
           this.$router.push({

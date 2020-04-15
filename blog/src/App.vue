@@ -35,6 +35,7 @@ html {
     margin: 0;
     padding: 0;
     background: linear-gradient(45deg, #282828, #371c57a6);
+    overflow: auto;
 }
 .slide-enter-active {
     animation: slide-in 0.2s ease-out;
