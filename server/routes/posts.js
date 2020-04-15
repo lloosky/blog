@@ -52,4 +52,23 @@ router.put('/:id', async (req, res) => {
     console.log(e)
   }
 })
+// add comment to single post
+router.post('/comment/:id', async (req, res) => {
+  try {
+    const singlePost = await User.updateOne({
+      "posts.postID": req.params.id
+    }, {
+      $push: {
+        "posts.$.post.comments": {
+          author: req.body.author,
+          comment: req.body.comment
+        }
+      }
+    })
+    if (!singlePost) return res.status(404).send('The post id was not found')
+    res.send(singlePost)
+  } catch (e) {
+    console.log(e)
+  }
+})
 module.exports = router

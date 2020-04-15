@@ -1,11 +1,11 @@
 <template>
 <div class="slider">
   <carousel :perPage="1" :navigationEnabled="true" :autoplay="true" :loop="true" :autoplayTimeout="3000" :paginationEnabled="false">
-    <slide v-for="(post) in limitedPosts" :key="post.postID">
+    <slide v-for="(post) in lastAddedPosts" :key="post.postID">
       <div class="post-info">
         <h1>{{post.post.title}}</h1>
         <span>{{post.post.date}}</span>
-        <p>{{post.post.body}}</p>
+        <p>{{`${post.post.body.slice(0,50)}...`}}</p>
         <button type="button" name="button">read article</button>
       </div>
       <div class="post-photo" :style="{backgroundImage: `url(http://localhost:5000/${post.postIMG})`}">
@@ -35,7 +35,7 @@ export default {
     posts() {
       return this.$store.state.posts
     },
-    limitedPosts() {
+    lastAddedPosts() {
       return this.posts.slice(0, 3)
     }
   },

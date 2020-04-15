@@ -23,7 +23,7 @@
           <div class="remove-post" @click="removeSinglePost(post.postID, index)">
             <img src="https://img.icons8.com/ios/50/000000/delete.png" />
           </div>
-          <div class="see-post" @click="seeSinglePost(post.postID)">
+          <div class="see-post" @click="showSinglePost(post)">
             <img src="https://img.icons8.com/ios/50/000000/invisible.png" />
           </div>
         </div>
@@ -32,8 +32,8 @@
       </div>
       <h3>{{post.post.title}}</h3>
       <span>{{post.post.date}}</span>
-      <p>{{post.post.body}}</p>
-      <button type="button" name="button">read article</button>
+      <p>{{post.post.body.slice(0,50)}}...</p>
+      <button type="button" name="button" @click="showSinglePost(post)">read article</button>
     </div>
   </div>
 </div>
@@ -60,7 +60,14 @@ export default {
       const singlePost = this.posts.filter(item => item.postID === id)
       this.$store.commit(Constants.SET_POST, singlePost)
     },
-    seeSinglePost() {},
+    showSinglePost(post) {
+      this.isSinglePostVisible = true
+      if(this.$router.currentRoute.path !== '/blog') {
+        this.$router.push({path: '/blog'})
+      }
+      this.singlePost = post
+      window.scrollTo(0,0)
+    },
     async removeSinglePost(id, index) {
       try {
         if (confirm('Are you sure ?')) {
@@ -79,6 +86,22 @@ export default {
       },
       set(value) {
         this.$store.state.showEditPost = value
+      }
+    },
+    isSinglePostVisible: {
+      get() {
+        return this.$store.state.isSinglePostVisible
+      },
+      set(value) {
+        this.$store.state.isSinglePostVisible = value
+      }
+    },
+    singlePost: {
+      get() {
+        return this.$store.state.singlePost
+      },
+      set(value) {
+        this.$store.state.singlePost = value
       }
     },
     posts() {
