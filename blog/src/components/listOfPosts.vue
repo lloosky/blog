@@ -5,7 +5,7 @@
   </transition>
   <div class="posts-navigation-bar">
     <div class="search">
-      <input type="text" name="" value="" placeholder="find post">
+      <input type="text" name="" value="" placeholder="find post" v-model="searchPost">
       <div class="search-button">&#10132;</div>
     </div>
     <div class="display-form">
@@ -14,7 +14,7 @@
     </div>
   </div>
   <div class="list-of-posts" :style='{gridTemplateColumns: gridColumns}'>
-    <div class="single-post" v-for="(post, index) in posts" :key="post.postID">
+    <div class="single-post" v-for="(post, index) in filteredPosts" :key="post.postID">
       <div class="post-photo-container">
         <div class="single-post-controls" v-if="isTokenAvaible">
           <div class="edit-post" @click="editSinglePost(post.postID)">
@@ -50,7 +50,8 @@ export default {
   data() {
     return {
       gridColumns: "25% 25% 25% 25%",
-      isTokenAvaible: this.$store.state.isTokenAvaible
+      isTokenAvaible: this.$store.state.isTokenAvaible,
+      searchPost: ''
     }
   },
   methods: {
@@ -62,11 +63,13 @@ export default {
     },
     showSinglePost(post) {
       this.isSinglePostVisible = true
-      if(this.$router.currentRoute.path !== '/blog') {
-        this.$router.push({path: '/blog'})
+      if (this.$router.currentRoute.path !== '/blog') {
+        this.$router.push({
+          path: '/blog'
+        })
       }
       this.singlePost = post
-      window.scrollTo(0,0)
+      window.scrollTo(0, 0)
     },
     async removeSinglePost(id, index) {
       try {
@@ -80,6 +83,11 @@ export default {
     }
   },
   computed: {
+    filteredPosts() {
+      return this.posts.filter(post => {
+        return post.post.title.includes(this.searchPost)
+      })
+    },
     showEditPost: {
       get() {
         return this.$store.state.showEditPost

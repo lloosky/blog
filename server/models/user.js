@@ -15,10 +15,6 @@ const User = mongoose.model('User', new mongoose.Schema({
     type: String,
     required: true
   },
-  img: {
-    type: String,
-    required: true
-  },
   posts: {
     type: Array,
     required: true
@@ -29,8 +25,7 @@ function validateUser(user) {
   const schema = {
     name: Joi.string().required(),
     email: Joi.string().required().email(),
-    password: Joi.string().required(),
-    img: Joi.string().required()
+    password: Joi.string().required()
   }
   return Joi.validate(user, schema)
 }

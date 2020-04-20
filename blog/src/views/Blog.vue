@@ -17,7 +17,7 @@
       <input type="text" name="" value="" placeholder="Comment" v-model="commentContent">
       <button type="button" name="button" @click="addComment(singlePost.postID)">add comment</button>
     </div>
-    <div class="single-comment" v-for="(comment) in singlePost.post.comments" :key="comment">
+    <div class="single-comment" v-for="(comment) in singlePost.post.comments" :key="comment.comment">
       <h6>{{comment.author}}</h6>
       <span>{{comment.comment}}</span>
     </div>
