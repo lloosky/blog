@@ -1,8 +1,8 @@
 <template>
 <div class="editPage-container">
-  <form enctype="multipart/form-data">
+  <form onsubmit="event.preventDefault()">
     <div class="close-button">
-      <button @click="closeEditPost">X</button>
+      <button @click="closeEditPost()">X</button>
     </div>
     <h2>Edit post - {{postToEdit.post.title}}</h2>
     <input type="text" placeholder="title" v-model="postToEdit.post.title">

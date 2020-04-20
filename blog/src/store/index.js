@@ -6,7 +6,9 @@ export default new Vuex.Store({
     isTokenAvaible: false,
     posts: [],
     postToEdit: [],
-    showEditPost: false
+    showEditPost: false,
+    singlePost: [],
+    isSinglePostVisible: false
   },
   mutations: {
     SET_POST(state, post) {
